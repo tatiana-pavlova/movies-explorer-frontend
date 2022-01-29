@@ -1,0 +1,131 @@
+.project {
+  width: 100%;
+  padding: 110px 70px;
+  box-sizing: border-box;
+}
+
+.project__chart {
+  display: flex;
+  width: 100%;
+  height: 36px;
+}
+
+.project__first-term {
+  width: 20%;
+  background-color: #2BE080;
+}
+
+.project__first-term-name {
+  width: 20%;
+}
+
+.project__info {
+  display: flex;
+  margin: 70px 0 110px;
+}
+
+.project__item {
+  margin-right: 40px;
+}
+
+.project__item:last-child {
+  margin-right: 0;
+}
+
+.project__second-term {
+  width: 80%;
+  background-color: #F2F2F2;
+}
+
+.project__second-term-name {
+  width: 80%;
+}
+
+.project__term-duration {
+  width: 100%;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 36px;
+  color: #000;
+  margin: 0;
+  text-align: center;
+}
+
+.project__term-name {
+  width: 100%;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #A0A0A0;
+  margin: 14px 0 0;
+  text-align: center;
+}
+
+.project__text {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000;
+  margin: 0;
+}
+
+.project__title {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000;
+  margin: 0 0 26px;
+}
+
+@media screen and (max-width: 770px) {
+  .project {
+    padding: 90px 50px;
+  }
+
+  .project__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .project {
+    padding: 70px 18px;
+  }
+
+  .project__info {
+    display: block;
+    margin: 60px 0;
+  }
+
+  .project__item {
+    margin-bottom: 56px;
+  }
+
+  .project__item:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .project__term-duration {
+    font-size: 11px;
+  }
+
+  .project__text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .project__title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .project__term-name {
+    font-size: 11px;
+    line-height: 13px;
+  }
+}

@@ -7,10 +7,15 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import './App.css';
+
 
 function App() {
   return (
-    <>
+    <div className='content'>
+      <Header />
       <Switch>
         <Route exact path='/'>
           <Main />
@@ -34,8 +39,8 @@ function App() {
           <PageNotFound />
         </Route>
       </Switch>
-      
-    </>
+      <Footer />
+    </div>
   );
 }
 
