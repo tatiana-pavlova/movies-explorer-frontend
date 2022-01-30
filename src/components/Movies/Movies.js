@@ -1,8 +1,13 @@
 import React from 'react';
+import SearchForm from '../SearchForm/SearchForm';
+import './Movies.css';
 
 function Movies() {
   return (
-    <h1>Page Movies</h1>
+    <section className='movies'>
+      <SearchForm />
+    </section>
+    
   );
 }
 
