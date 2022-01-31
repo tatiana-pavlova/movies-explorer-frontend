@@ -12,7 +12,6 @@ function Movies() {
       <MoviesCardList cards={temporaryRenderForMovies} btnPath={saveIconPath} btnAlt='иконка флажок'  />
       <button className='movies__more'>Ещё</button>
     </section>
-    
   );
 }
 

@@ -51,6 +51,7 @@
 .card__image:hover {
   transform: scale(1.05);
   transition: transform ease-in .5s;
+  cursor: pointer;
 }
 
 .card__title {
