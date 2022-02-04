@@ -14,7 +14,6 @@ function MoviesCard(props) {
       </div>
       <img className="card__image" src={samplePicturePath} alt="Постер фильма" />
     </div>
-
   )
 }
 

@@ -9,14 +9,14 @@ function Login() {
         <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='register__logo'/></Link>
         <h2 className='register__title'>Рады видеть!</h2>
         <form>
-          <div >
+          <div className='register__input-wrapper'>
             <fieldset className='register__fieldset'>
-              <label for='useremail' className='register__label'>E-mail</label>
-              <input type='email' className='register__input' value='pochta@yandex.ru' id='useremail'></input>
+              <label htmlFor='useremail' className='register__label'>E-mail</label>
+              <input type='email' className='register__input' defaultValue='pochta@yandex.ru' id='useremail'></input>
             </fieldset>
             <fieldset className='register__fieldset'>
-              <label for='userpassword' className='register__label'>Пароль</label>
-              <input type='password' className='register__input' value='qwerty' id='userpassword'></input>
+              <label htmlFor='userpassword' className='register__label'>Пароль</label>
+              <input type='password' className='register__input' defaultValue='qwerty' id='userpassword'></input>
             </fieldset>
             <span className='register__input-error register__input-error_invisible'>Что-то пошло не так...</span>
           </div>

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Route, Link, NavLink } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import logoPath from '../../images/logo.svg';
-import profileIcon from '../../images/icon-profile.svg';
+import Navigation from '../Navigation/Navigation';
+
 import './Header.css';
 
-function Header() {
+function Header(props) {
   return (
     <>
       <Route exact path='/'>
@@ -19,28 +20,8 @@ function Header() {
       <Route path={['/movies', '/saved-movies', '/profile']}>
         <header className='header header_theme_light'>
           <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='header__logo'/></Link>
-          <div className='header__menu'>
-            <nav className='header__nav'>
-              <NavLink to='/movies' className='header__nav-link' activeClassName='header__nav-link_active'>Фильмы</NavLink>
-              <NavLink to='/saved-movies' className='header__nav-link' activeClassName='header__nav-link_active'>Сохранённые фильмы</NavLink>
-            </nav>
-            <div className='header__profile'>
-              <div className='header__profile-wrapper'>
-                <NavLink to='/profile' className='header__profile-link' activeClassName='header__profile-link_active'>Аккаунт</NavLink>
-                <button className='header__ico-wrapper'><img src={profileIcon} alt='иконка профайла' className='header__ico'/></button>
-              </div>
-              {/* <NavLink to='/profile' className='header__profile-link' activeClassName='header__nav-link_active'>
-                <div className='header__profile-wrapper'>
-                  <p className='header__profile-text'>Аккаунт</p>
-                  <div className='header__ico-wrapper'>
-                    <img src={profileIcon} alt='иконка профайла' className='header__ico'/>
-                  </div>
-                </div>
-                
-              </NavLink> */}
-            </div>
-          </div>
-          <div className='header__burger'>
+          <Navigation />
+          <div className='header__burger' onClick={props.onBurgerClick}>
             <span className='header__burger-sign'></span>
           </div>
         </header>
