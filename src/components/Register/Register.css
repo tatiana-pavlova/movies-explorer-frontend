@@ -58,6 +58,10 @@
   color: #000;
 }
 
+.register__input:hover {
+  background: linear-gradient(#F9F9F9, #DCDCDC);
+}
+
 .register__input-error {
   font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
   font-weight: 500;

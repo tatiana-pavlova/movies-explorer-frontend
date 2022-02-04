@@ -12,11 +12,11 @@ function Login() {
           <div className='register__input-wrapper'>
             <fieldset className='register__fieldset'>
               <label htmlFor='useremail' className='register__label'>E-mail</label>
-              <input type='email' className='register__input' defaultValue='pochta@yandex.ru' id='useremail'></input>
+              <input type='email' className='register__input' defaultValue='pochta@yandex.ru' placeholder='email' id='useremail'></input>
             </fieldset>
             <fieldset className='register__fieldset'>
               <label htmlFor='userpassword' className='register__label'>Пароль</label>
-              <input type='password' className='register__input' defaultValue='qwerty' id='userpassword'></input>
+              <input type='password' className='register__input' defaultValue='qwerty' placeholder='Пароль' id='userpassword'></input>
             </fieldset>
             <span className='register__input-error register__input-error_invisible'>Что-то пошло не так...</span>
           </div>

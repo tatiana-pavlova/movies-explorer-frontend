@@ -10,12 +10,12 @@ function Profile() {
         <form>
           <fieldset className='profile__info'>
             <label className='profile__label'>Имя</label>
-            <input type='text' className='profile__input' value='Виталий' />
+            <input type='text' className='profile__input' defaultValue='Виталий' placeholder='Имя' />
           </fieldset>
           <hr className='profile__line' />
           <fieldset className='profile__info'>
             <label className='profile__label'>E-mail</label>
-            <input type='email' className='profile__input' value='pochta@yandex.ru' />
+            <input type='email' className='profile__input' defaultValue='pochta@yandex.ru' placeholder='email' />
           </fieldset>
           <button type='submit' className='profile__edit'>Редактировать</button>
         </form>
