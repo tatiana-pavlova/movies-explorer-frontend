@@ -10,7 +10,7 @@ function SearchForm() {
       <form className="search">
         <fieldset className="search__content">
           <img src={searchPath} className="search__icon" alt="Знак поиска - лупа" />
-          <input type='search' className="search__input" placeholder="Фильм"></input>
+          <input type='search' className="search__input" placeholder="Фильм" required></input>
           <button type="submit" className="search__button"><img src={findPath} className="search__sign" alt='Знак поиска - лупа' /></button>
         </fieldset>
         <hr className="search__vertical" />

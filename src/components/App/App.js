@@ -23,7 +23,6 @@ function App() {
     setIsPopupNavigationOpen(false);
   }
 
-
   return (
     <div className='app'>
       <div className='content'>

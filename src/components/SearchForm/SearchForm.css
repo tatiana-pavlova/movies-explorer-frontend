@@ -49,6 +49,10 @@
   color: #000;
 }
 
+.search__input:hover {
+  background: linear-gradient(#F9F9F9, #DCDCDC);
+}
+
 .search__input::placeholder {
   color: #A0A0A0;
 }
