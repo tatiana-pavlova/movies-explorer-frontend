@@ -11,15 +11,29 @@
   margin: 0;
   padding: 0;
   border: none;
-  background: none;
+  background: url('../../images/save-icon.svg') center no-repeat;
 }
 
-.card__btn-icon {
+.card__button:hover {
+  cursor: pointer;
+  border: 1px solid #2BE080;
+  border-radius: 50%;
+}
+
+.card__button_active {
+  background: url('../../images/save-icon-active.svg') center no-repeat;
+}
+
+.card__close-button {
   width: 30px;
   height: 30px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: url('../../images/close-icon.svg') center no-repeat;
 }
 
-.card__btn-icon:hover {
+.card__close-button:hover {
   cursor: pointer;
   border: 1px solid #2BE080;
   border-radius: 50%;

@@ -25,7 +25,7 @@ function App() {
 
   return (
     <div className='app'>
-      <div className='content'>
+      <div className='app__content'>
         <Header onBurgerClick={handleBurgerMenuClick} />
         <Switch>
           <Route exact path='/'>

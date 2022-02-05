@@ -49,7 +49,7 @@
   color: #000;
 }
 
-.search__input:hover {
+.search__input:focus {
   background: linear-gradient(#F9F9F9, #DCDCDC);
 }
 

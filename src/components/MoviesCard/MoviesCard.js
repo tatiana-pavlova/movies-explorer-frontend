@@ -3,6 +3,12 @@ import samplePicturePath from '../../images/sample-picture.png';
 import './MoviesCard.css';
 
 function MoviesCard(props) {
+  const [isSaved, setIsSaved] = React.useState(false);
+
+  const handleSaveClick = () => {
+    setIsSaved(isSaved ? false : true);
+  }
+
   return (
     <div className="card">
       <div className="card__head">
@@ -10,7 +16,10 @@ function MoviesCard(props) {
           <h2 className="card__title">33 слова о дизайне</h2>
           <p className="card__duration">1ч 47м</p>
         </div>
-        <button className="card__button"><img src={props.btnPath} className="card__btn-icon" alt={props.btnAlt} /></button>
+        {props.isSavedMoviesPage ? 
+          <button className="card__close-button"></button> :
+          <button className={`card__button ${isSaved ? 'card__button_active' : ''}`} onClick={handleSaveClick}></button>
+        }
       </div>
       <img className="card__image" src={samplePicturePath} alt="Постер фильма" />
     </div>

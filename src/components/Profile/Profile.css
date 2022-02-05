@@ -59,6 +59,10 @@
   outline: none;
 }
 
+.profile__input:focus {
+  background: linear-gradient(#F9F9F9, #DCDCDC);
+}
+
 .profile__label {
   font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
   font-weight: 500;

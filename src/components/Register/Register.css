@@ -58,7 +58,7 @@
   color: #000;
 }
 
-.register__input:hover {
+.register__input:focus {
   background: linear-gradient(#F9F9F9, #DCDCDC);
 }
 
