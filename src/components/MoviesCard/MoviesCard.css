@@ -1,0 +1,79 @@
+.card {
+  width: 100%;
+  background-color: #FDFDFD;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.card__button {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: url('../../images/save-icon.svg') center no-repeat;
+}
+
+.card__button:hover {
+  cursor: pointer;
+  border: 1px solid #2BE080;
+  border-radius: 50%;
+}
+
+.card__button_active {
+  background: url('../../images/save-icon-active.svg') center no-repeat;
+}
+
+.card__close-button {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: url('../../images/close-icon.svg') center no-repeat;
+}
+
+.card__close-button:hover {
+  cursor: pointer;
+  border: 1px solid #2BE080;
+  border-radius: 50%;
+}
+
+.card__duration {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #A0A0A0;
+  margin: 0;
+}
+
+.card__head {
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card__image {
+  width: 100%;
+  display: block;
+}
+
+.card__image:hover {
+  transform: scale(1.05);
+  transition: transform ease-in .5s;
+  cursor: pointer;
+}
+
+.card__title {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #000;
+  margin: 0;
+  margin-bottom: 9px;
+}
