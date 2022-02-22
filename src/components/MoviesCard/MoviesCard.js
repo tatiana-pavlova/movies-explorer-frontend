@@ -1,5 +1,4 @@
 import React from "react";
-import samplePicturePath from '../../images/sample-picture.png';
 import './MoviesCard.css';
 
 function MoviesCard(props) {
@@ -13,7 +12,7 @@ function MoviesCard(props) {
     <div className="card">
       <div className="card__head">
         <div className="card__info">
-          <h2 className="card__title">33 слова о дизайне</h2>
+          <h2 className="card__title">{props.name}</h2>
           <p className="card__duration">1ч 47м</p>
         </div>
         {props.isSavedMoviesPage ? 
@@ -21,7 +20,7 @@ function MoviesCard(props) {
           <button className={`card__button ${isSaved ? 'card__button_active' : ''}`} onClick={handleSaveClick}></button>
         }
       </div>
-      <img className="card__image" src={samplePicturePath} alt="Постер фильма" />
+      <img className="card__image" src={props.image} alt="Постер фильма" />
     </div>
   )
 }
