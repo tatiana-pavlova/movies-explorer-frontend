@@ -14,7 +14,9 @@ function MoviesCardList(props) {
       ? <p className="card-list__not-found">{props.searchInfoBox}</p>
       : <div className="card-list__cards">
           {props.cards.map((card) => {
-            return (<MoviesCard key={card.id} name={card.nameRU} image={`https://api.nomoreparties.co${card.image.url}`} isSavedMoviesPage={props.isSavedMoviesPage} />)
+            return (<MoviesCard key={card.id} card={card} name={card.nameRU} image={`https://api.nomoreparties.co${card.image.url}`}
+              trailer={card.trailerLink} duration={card.duration} isSavedMoviesPage={props.isSavedMoviesPage} 
+              onSaveMovie={props.onSaveMovie} onDeleteMovie={props.onDeleteMovie} />)
           })
           }
         </div>

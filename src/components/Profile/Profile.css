@@ -11,7 +11,7 @@
 
 .profile__edit {
   display: block;
-  margin: 220px auto 16px;
+  margin: 10px auto 16px;
   padding: 0;
   border: none;
   background: none;
@@ -25,6 +25,11 @@
 .profile__edit:hover {
   opacity: .5;
   cursor: pointer;
+}
+
+.profile__edit:disabled {
+  opacity: .2;
+  cursor: default;
 }
 
 .profile__greeting {
@@ -61,6 +66,15 @@
 
 .profile__input:focus {
   background: linear-gradient(#F9F9F9, #DCDCDC);
+}
+
+.profile__input-error {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  color: #FF3055;
+  margin: 0;
 }
 
 .profile__label {

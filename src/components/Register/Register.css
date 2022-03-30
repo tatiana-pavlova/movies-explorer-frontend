@@ -24,6 +24,11 @@
   cursor: pointer;
 }
 
+.register__button:disabled {
+  opacity: .5;
+  cursor: auto;
+}
+
 .register__content {
   width: 396px;
   margin: 0 auto;

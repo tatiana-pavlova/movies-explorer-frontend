@@ -1,0 +1,28 @@
+.tooltip {
+  opacity: 0;
+}
+
+.tooltip_opened {
+  opacity: 1;
+  transition: opacity 1s;
+}
+
+.tooltip__container {
+  padding: 10px;
+  background-color: rgb(205, 252, 193);
+  height: 20px;
+  width: 70%;
+  margin: 170px auto 0;
+  
+}
+
+.tooltip__info-title {
+  width: 100%;
+  text-align: center;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #000;
+  margin: 0 auto;
+}
