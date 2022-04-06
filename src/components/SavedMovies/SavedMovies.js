@@ -1,14 +1,17 @@
 import React from 'react';
-import { temporaryRenderForSavedMovies } from '../../utils/temp';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 import './SavedMovies.css';
+import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 
-function SavedMovies() {
+function SavedMovies(props) {
+  const savedMovies = React.useContext(SavedMoviesContext);
+  
   return (
     <section className='saved-movies'>
-      <SearchForm />
-      <MoviesCardList cards={temporaryRenderForSavedMovies} isSavedMoviesPage={true} />
+      <SearchForm onSearchMovies={props.onSearchMovies} moviesPool={savedMovies} />
+      <MoviesCardList cards={props.selectedSavedMovies} isSavedMoviesPage={true} onDeleteMovie={props.onDeleteMovie}
+          searchInfoBox={props.searchInfoBox} />
       <div className='saved-movies__devider'></div>
     </section>
   );

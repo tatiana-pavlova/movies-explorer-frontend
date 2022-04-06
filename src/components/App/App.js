@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -14,14 +14,17 @@ import InfoTooltip from '../InfoTooltip/InfoTooltip';
 import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { useHistory } from 'react-router-dom';
+import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const [isPopupNavigationOpen, setIsPopupNavigationOpen] = React.useState(false);
   const [movies, setMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedMovies, setSelectedMovies] = React.useState([]);
+   
   const [savedMovies, setSavedMovies] = React.useState([]);
+  const [selectedSavedMovies, setSelectedSavedMovies] = React.useState(savedMovies);
   const [currentPage] = React.useState(1);
   const [cardsPerPage, setCardsPerPage] = React.useState(0);
   const [searchInfoBox, setSearchInfoBox] = React.useState('');
@@ -44,20 +47,35 @@ function App() {
       moviesApi.getMovies()
         .then((moviesData) => {
           console.log(moviesData);
-          setMovies(moviesData);
-          localStorage.setItem('movies', JSON.stringify(moviesData));
+          const selectedMoviesData = moviesData.map((movie) => {
+            return {movieId: movie.id, 
+                    country: movie.country,
+                    director: movie.director,
+                    duration: movie.duration,
+                    year: movie.year,
+                    description: movie.description,
+                    image: `https://api.nomoreparties.co${movie.image.url}`,
+                    trailer: movie.trailerLink,
+                    nameRU: movie.nameRU,
+                    nameEN: movie.nameEN === null ? '' : movie.nameEN,
+                    thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`}
+          });
+          setMovies(selectedMoviesData);
+          localStorage.setItem('movies', JSON.stringify(selectedMoviesData));
         })
         .catch((err) => {
           console.log(err);
           setSearchInfoBox('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
         });
-    } 
-    
-    setMovies(JSON.parse(localStorage.getItem('movies')))
+    } else {
+      setMovies(JSON.parse(localStorage.getItem('movies')))
+    }
   }, []);
 
   React.useEffect(() => {
-    setSelectedMovies(JSON.parse(localStorage.getItem('selectedMovies')))
+    if (localStorage.getItem('selectedMovies') !== null) {
+      setSelectedMovies(JSON.parse(localStorage.getItem('selectedMovies')))
+    }
     setCardsPerPageForRender();
   }, [])
 
@@ -65,11 +83,22 @@ function App() {
     mainApi.getUserInfo()
       .then ((res) => {
         setCurrentUser(res);
+        setLoggedIn(true);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [loggedIn])
+  }, [history, loggedIn])
+
+  React.useEffect (() => {
+    mainApi.getSavedMovies()
+      .then ((movies) => {
+        setSavedMovies(movies);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }, [savedMovies])
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -77,27 +106,35 @@ function App() {
     }, 2000)
   }, [isInfoTooltipOpen])
 
-
-  const filterMovies = (keyWords) => {
-    return movies.filter(movie => movie.nameRU.toLowerCase().includes(keyWords.toLowerCase()));
+  
+  const filterMovies = (movies, keyWords, isShortFilm) => {
+    let filteredMovies = movies.filter(movie => movie.nameRU.toLowerCase().includes(keyWords.toLowerCase()));
+    if (isShortFilm) {
+      filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
+    }
+    return filteredMovies;
   };
 
-  const handleSearchMovies = (keyWords) => {
+  const handleSearchMovies = (moviesPool, keyWords, isShortFilm) => {
     setIsLoading(true);
         
-    const foundMovies = filterMovies(keyWords);
+    const foundMovies = filterMovies(moviesPool, keyWords, isShortFilm);
         
     if (foundMovies.length === 0) {
       setSearchInfoBox('Ничего не найдено');
     } 
-    localStorage.setItem('selectedMovies', JSON.stringify(foundMovies));
-    setSelectedMovies(foundMovies);
+    
+    if (moviesPool === savedMovies) {
+      setSelectedSavedMovies(foundMovies);
+    } else {
+      localStorage.setItem('selectedMovies', JSON.stringify(foundMovies));
+      setSelectedMovies(foundMovies);
+    }
     setCardsPerPageForRender();
     setIsLoading(false);
-    // localStorage.clear();
   };
 
-  
+
   const handleBurgerMenuClick = () => {
     setIsPopupNavigationOpen(true);
   }
@@ -126,6 +163,7 @@ function App() {
     mainApi.saveMovie(movie)
       .then ((savedMovie) => {
         setSavedMovies([...savedMovies, savedMovie]);
+        movie._id = savedMovie._id;
       })
       .catch((err) => {
         console.log(err);
@@ -133,7 +171,9 @@ function App() {
   }
 
   const handleDeleteMovie = (movie) => {
-    mainApi.deleteMovie(movie._id)
+    const chosenMovie = savedMovies.find(savedMovie => savedMovie.movieId === movie.movieId);
+    
+    mainApi.deleteMovie(chosenMovie._id)
       .then(() => {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id))
       })
@@ -141,6 +181,7 @@ function App() {
         console.log(err);
       });
   }
+
 
   const onRegister = (values) => {
     return mainApi.register(values)
@@ -165,6 +206,12 @@ function App() {
     .catch(() => {
       setLoginError(true);
     });
+  }
+
+  const onSignOut = () => {
+    mainApi.unauthorize();
+    setLoggedIn(false);
+    localStorage.clear();
   }
 
   const handleSuccessTooltip = () => {
@@ -201,39 +248,37 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className='app'>
-        <div className='app__content'>
-          <Header onBurgerClick={handleBurgerMenuClick} />
-          <Switch>
-            <Route exact path='/'>
-              <Main />
-            </Route>
-            <Route path='/movies'>
-              <Movies onSearchMovies={handleSearchMovies} onLoadMore={handleLoadMore} onSaveMovie={handleSaveMovie} 
-                onDeleteMovie={handleDeleteMovie} selectedMovies={selectedMovies} currentCards={currentCards} 
-                isLoading={isLoading} searchInfoBox={searchInfoBox} />
-            </Route>
-            <Route path='/saved-movies'>
-              <SavedMovies />
-            </Route>
-            <Route path='/profile'>
-              <Profile onUpdateUser={handleUpdateUser} infoTooltip={<InfoTooltip isOpen={isInfoTooltipOpen} title={infoTooltipTitle} />} />
-            </Route>
-            <Route path='/signup'>
-              <Register onRegister={onRegister} registerError={registerError} />
-            </Route>
-            <Route path='/signin'>
-              <Login onLogin={onLogin} loginError={loginError} />
-            </Route>
-            <Route path='*'>
-              <PageNotFound />
-            </Route>
-          </Switch>
-          <Footer />
+      <SavedMoviesContext.Provider value={savedMovies}>
+        <div className='app'>
+          <div className='app__content'>
+            <Header onBurgerClick={handleBurgerMenuClick} isLoggedIn={loggedIn} />
+            <Switch>
+              <Route exact path='/'>
+                <Main />
+              </Route>
+              <ProtectedRoute path='/movies' loggedIn={loggedIn} component={Movies} onSearchMovies={handleSearchMovies} 
+                  onLoadMore={handleLoadMore} onSaveMovie={handleSaveMovie} onDeleteMovie={handleDeleteMovie} 
+                  selectedMovies={selectedMovies} currentCards={currentCards} isLoading={isLoading} searchInfoBox={searchInfoBox}
+                  movies={movies} />
+              <ProtectedRoute path='/saved-movies' loggedIn={loggedIn} component={SavedMovies} onDeleteMovie={handleDeleteMovie}
+                  onSearchMovies={handleSearchMovies} selectedSavedMovies={selectedSavedMovies} searchInfoBox={searchInfoBox} />
+              <ProtectedRoute path='/profile' loggedIn={loggedIn} component={Profile} onUpdateUser={handleUpdateUser} 
+                  infoTooltip={<InfoTooltip isOpen={isInfoTooltipOpen} title={infoTooltipTitle} />} onSignOut={onSignOut}  />
+              <Route path='/signup'>
+                <Register onRegister={onRegister} registerError={registerError} />
+              </Route>
+              <Route path='/signin'>
+                <Login onLogin={onLogin} loginError={loginError} />
+              </Route>
+              <Route path='*'>
+                <PageNotFound />
+              </Route>
+            </Switch>
+            <Footer />
+          </div>
+          <PopupNavigation isOpen={isPopupNavigationOpen} onClose={closePopupNavigation} />
         </div>
-        <PopupNavigation isOpen={isPopupNavigationOpen} onClose={closePopupNavigation} />
-        
-      </div>
+      </SavedMoviesContext.Provider>
     </CurrentUserContext.Provider>
   );
 }

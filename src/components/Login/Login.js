@@ -5,12 +5,10 @@ import { useFormWithValidation } from '../useFormWithValidation/useFormWithValid
 
 function Login({onLogin, loginError}) {
   const validation =useFormWithValidation();
-  // const validation = useFormWithValidation();
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     onLogin(validation.values)
-    // onRegister(validation.values)
   }
 
   const handleChange = (e) => {

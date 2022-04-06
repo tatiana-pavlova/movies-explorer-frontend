@@ -69,7 +69,7 @@ function Profile(props) {
           <div>{props.infoTooltip}</div>
           <button type='submit' className='profile__edit' disabled={validation.isValid && isValid ? false : true}>Редактировать</button>
         </form>
-        <Link to='/' className='profile__quit'>Выйти из аккаунта</Link> 
+        <Link to='/' className='profile__quit' onClick={props.onSignOut}>Выйти из аккаунта</Link> 
       </div>
     </section>
   );
