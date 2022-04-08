@@ -6,7 +6,7 @@ import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 
 function SavedMovies(props) {
   const savedMovies = React.useContext(SavedMoviesContext);
-  
+    
   return (
     <section className='saved-movies'>
       <SearchForm onSearchMovies={props.onSearchMovies} moviesPool={savedMovies} />

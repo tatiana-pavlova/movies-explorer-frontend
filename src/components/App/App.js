@@ -22,7 +22,6 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedMovies, setSelectedMovies] = React.useState([]);
-   
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [selectedSavedMovies, setSelectedSavedMovies] = React.useState(savedMovies);
   const [currentPage] = React.useState(1);
@@ -41,12 +40,22 @@ function App() {
   const history = useHistory();
 
   
+  React.useEffect (() => {
+    mainApi.getUserInfo()
+      .then ((res) => {
+        setCurrentUser(res);
+        setLoggedIn(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [history, loggedIn])
+ 
 
   React.useEffect(() => {
     if (localStorage.getItem('movies') === null) {
       moviesApi.getMovies()
         .then((moviesData) => {
-          console.log(moviesData);
           const selectedMoviesData = moviesData.map((movie) => {
             return {movieId: movie.id, 
                     country: movie.country,
@@ -57,7 +66,7 @@ function App() {
                     image: `https://api.nomoreparties.co${movie.image.url}`,
                     trailer: movie.trailerLink,
                     nameRU: movie.nameRU,
-                    nameEN: movie.nameEN === null ? '' : movie.nameEN,
+                    nameEN: movie.nameEN === null ? 'No Name' : movie.nameEN,
                     thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`}
           });
           setMovies(selectedMoviesData);
@@ -72,6 +81,7 @@ function App() {
     }
   }, []);
 
+
   React.useEffect(() => {
     if (localStorage.getItem('selectedMovies') !== null) {
       setSelectedMovies(JSON.parse(localStorage.getItem('selectedMovies')))
@@ -79,17 +89,7 @@ function App() {
     setCardsPerPageForRender();
   }, [])
 
-  React.useEffect (() => {
-    mainApi.getUserInfo()
-      .then ((res) => {
-        setCurrentUser(res);
-        setLoggedIn(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [history, loggedIn])
-
+    
   React.useEffect (() => {
     mainApi.getSavedMovies()
       .then ((movies) => {
@@ -98,7 +98,8 @@ function App() {
       .catch((err) => {
         console.log(err);
       })
-  }, [savedMovies])
+  }, [loggedIn])
+
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -114,6 +115,7 @@ function App() {
     }
     return filteredMovies;
   };
+
 
   const handleSearchMovies = (moviesPool, keyWords, isShortFilm) => {
     setIsLoading(true);
@@ -159,8 +161,10 @@ function App() {
     }
   }
 
+
   const handleSaveMovie = (movie) => {
-    mainApi.saveMovie(movie)
+    if (!savedMovies.some(savedMovie => savedMovie.movieId === movie.movieId)) {
+      mainApi.saveMovie(movie)
       .then ((savedMovie) => {
         setSavedMovies([...savedMovies, savedMovie]);
         movie._id = savedMovie._id;
@@ -168,7 +172,9 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+    }
   }
+
 
   const handleDeleteMovie = (movie) => {
     const chosenMovie = savedMovies.find(savedMovie => savedMovie.movieId === movie.movieId);
@@ -176,6 +182,7 @@ function App() {
     mainApi.deleteMovie(chosenMovie._id)
       .then(() => {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id))
+        setSelectedSavedMovies((state) => state.filter((c) => c._id !== movie._id))
       })
       .catch((err) => {
         console.log(err);
@@ -195,6 +202,7 @@ function App() {
       })
   }
 
+
   const onLogin = (values) => {
     return mainApi.authorize(values)
     .then ((data) => {
@@ -208,21 +216,25 @@ function App() {
     });
   }
 
+
   const onSignOut = () => {
     mainApi.unauthorize();
     setLoggedIn(false);
     localStorage.clear();
   }
 
+
   const handleSuccessTooltip = () => {
     setIsInfoTooltipOpen(true);
     setInfoTooltipTitle('Данные успешно обновлены');
   }
 
+
   const handleTooltipError = () => {
     setIsInfoTooltipOpen(true);
     setInfoTooltipTitle('Ошибка обновления данных');
   }
+
 
   const handleUpdateUser = (data) => {
     return mainApi.editProfileInfo(data)
