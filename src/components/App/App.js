@@ -58,7 +58,7 @@ function App() {
         .then((moviesData) => {
           const selectedMoviesData = moviesData.map((movie) => {
             return {movieId: movie.id, 
-                    country: movie.country,
+                    country: movie.country === null ? 'No Name' : movie.country,
                     director: movie.director,
                     duration: movie.duration,
                     year: movie.year,
@@ -221,6 +221,7 @@ function App() {
     mainApi.unauthorize();
     setLoggedIn(false);
     localStorage.clear();
+    history.push('/');
   }
 
 
