@@ -107,7 +107,7 @@ function App() {
     }, 2000)
   }, [isInfoTooltipOpen])
 
-  
+    
   const filterMovies = (movies, keyWords, isShortFilm) => {
     let filteredMovies = movies.filter(movie => movie.nameRU.toLowerCase().includes(keyWords.toLowerCase()));
     if (isShortFilm) {
@@ -218,10 +218,17 @@ function App() {
 
 
   const onSignOut = () => {
-    mainApi.unauthorize();
-    setLoggedIn(false);
-    localStorage.clear();
-    history.push('/');
+    mainApi.unauthorize()
+      .then((res) => {
+        if (res) {
+          setLoggedIn(false);
+          localStorage.clear();
+          history.push('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
 

@@ -8,7 +8,7 @@ import './Header.css';
 function Header(props) {
   if (props.isLoggedIn) {
     return (
-      <Route exact path={['/movies', '/saved-movies', '/profile', '/signin', '/signup', '/']}>
+      <Route path={['/movies', '/saved-movies', '/profile', '/']}>
         <header className='header header_theme_light'>
           <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='header__logo'/></Link>
           <Navigation />
@@ -20,7 +20,7 @@ function Header(props) {
     )
   } else {
     return (
-      <Route exact path={['/movies', '/saved-movies', '/profile', '/signin', '/signup', '/']}>
+      <Route path={['/signin', '/signup', '/']}>
         <header className='header header_theme_dark'>
           <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='header__logo'/></Link>
           <div>

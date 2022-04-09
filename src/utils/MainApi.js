@@ -30,7 +30,8 @@ class MainApi {
       headers: this._headers,
       credentials: 'include',
     })
-    .catch(err => console.log(err));
+      .then((res) => this._checkResponse(res))
+    // .catch(err => console.log(err));
   }
 
   getUserInfo = () => {
@@ -103,7 +104,8 @@ class MainApi {
   }
 }
 
-const mainApi = new MainApi({url: 'https://api.movies-explorer.tp.nomoredomains.rocks', 
+const mainApi = new MainApi({url: 'http://localhost:4000',
+  // 'https://api.movies-explorer.tp.nomoredomains.rocks', 
   headers: {'Content-Type': 'application/json'}
 });
 
