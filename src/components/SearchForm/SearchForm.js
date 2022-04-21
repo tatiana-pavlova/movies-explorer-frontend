@@ -8,10 +8,22 @@ function SearchForm(props) {
   const [keyWords, setKeyWords] = React.useState('');
   const [isShortFilm, setIsShortFilm] = React.useState(false);
 
+  React.useEffect (() => {
+    if (!props.isSavedMoviesPage) {
+      const input = document.querySelector('.search__input');
+      
+      input.value = JSON.parse(localStorage.getItem('keyWords'));
+      setKeyWords(JSON.parse(localStorage.getItem('keyWords')));
+      setIsShortFilm(JSON.parse(localStorage.getItem('isShortFilm')));
+    }
+  }, [])
+
+  
   function handleKeyWordsChange(e) {
     setKeyWords(e.target.value);
   }
 
+  
   function handleFilterCheckbox (checkboxValue) {
     setIsShortFilm(checkboxValue);
   }
@@ -20,10 +32,11 @@ function SearchForm(props) {
   function handleSubmit(e) {
     e.preventDefault();
     
-    props.onSearchMovies(props.moviesPool, keyWords, isShortFilm);
-    
-    e.target.reset();
-    setIsShortFilm(false);
+    if(!props.isSavedMoviesPage) {
+      props.onSearchMovies(props.moviesPool, keyWords, isShortFilm);
+    } else {
+      props.onSearchSavedMovies(keyWords, isShortFilm);
+    }
   }
 
 
@@ -39,7 +52,7 @@ function SearchForm(props) {
           </button>
         </fieldset>
         <hr className="search__vertical" />
-        <FilterCheckBox onFilterCheckbox={handleFilterCheckbox} />
+        <FilterCheckBox onFilterCheckbox={handleFilterCheckbox} isSavedMoviesPage={props.isSavedMoviesPage} />
       </form>
       <hr className="search__line" />
     </>

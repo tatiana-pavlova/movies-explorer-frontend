@@ -23,7 +23,6 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedMovies, setSelectedMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [selectedSavedMovies, setSelectedSavedMovies] = React.useState(savedMovies);
   const [currentPage] = React.useState(1);
   const [cardsPerPage, setCardsPerPage] = React.useState(0);
   const [searchInfoBox, setSearchInfoBox] = React.useState('');
@@ -84,7 +83,7 @@ function App() {
 
   React.useEffect(() => {
     if (localStorage.getItem('selectedMovies') !== null) {
-      setSelectedMovies(JSON.parse(localStorage.getItem('selectedMovies')))
+      setSelectedMovies(JSON.parse(localStorage.getItem('selectedMovies')));
     }
     setCardsPerPageForRender();
   }, [])
@@ -113,6 +112,10 @@ function App() {
     if (isShortFilm) {
       filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
     }
+
+    if (filteredMovies.length === 0) {
+      setSearchInfoBox('Ничего не найдено');
+    } 
     return filteredMovies;
   };
 
@@ -122,16 +125,11 @@ function App() {
         
     const foundMovies = filterMovies(moviesPool, keyWords, isShortFilm);
         
-    if (foundMovies.length === 0) {
-      setSearchInfoBox('Ничего не найдено');
-    } 
+    localStorage.setItem('selectedMovies', JSON.stringify(foundMovies));
+    localStorage.setItem('keyWords', JSON.stringify(keyWords));
+    localStorage.setItem('isShortFilm', JSON.stringify(isShortFilm));
+    setSelectedMovies(foundMovies);
     
-    if (moviesPool === savedMovies) {
-      setSelectedSavedMovies(foundMovies);
-    } else {
-      localStorage.setItem('selectedMovies', JSON.stringify(foundMovies));
-      setSelectedMovies(foundMovies);
-    }
     setCardsPerPageForRender();
     setIsLoading(false);
   };
@@ -182,7 +180,7 @@ function App() {
     mainApi.deleteMovie(chosenMovie._id)
       .then(() => {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id))
-        setSelectedSavedMovies((state) => state.filter((c) => c._id !== movie._id))
+        // setSelectedSavedMovies((state) => state.filter((c) => c._id !== movie._id))
       })
       .catch((err) => {
         console.log(err);
@@ -223,6 +221,7 @@ function App() {
         if (res) {
           setLoggedIn(false);
           localStorage.clear();
+          setSelectedMovies([]);
           history.push('/');
         }
       })
@@ -281,7 +280,7 @@ function App() {
                   selectedMovies={selectedMovies} currentCards={currentCards} isLoading={isLoading} searchInfoBox={searchInfoBox}
                   movies={movies} />
               <ProtectedRoute path='/saved-movies' loggedIn={loggedIn} component={SavedMovies} onDeleteMovie={handleDeleteMovie}
-                  onSearchMovies={handleSearchMovies} selectedSavedMovies={selectedSavedMovies} searchInfoBox={searchInfoBox} />
+                  filterMovies={filterMovies} searchInfoBox={searchInfoBox} />
               <ProtectedRoute path='/profile' loggedIn={loggedIn} component={Profile} onUpdateUser={handleUpdateUser} 
                   infoTooltip={<InfoTooltip isOpen={isInfoTooltipOpen} title={infoTooltipTitle} />} onSignOut={onSignOut}  />
               <Route path='/signup'>

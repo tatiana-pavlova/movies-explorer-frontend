@@ -2,6 +2,13 @@ import React from "react";
 import './FilterCheckBox.css';
 
 function FilterCheckBox(props) {
+
+  React.useEffect (() => {
+    if (!props.isSavedMoviesPage) {
+      const checkbox = document.querySelector('.switch__box');
+      checkbox.checked = JSON.parse(localStorage.getItem('isShortFilm'));
+    }
+  }, [])
     
   const handleClick = (e) => {
     let isChecked = e.target.checked;
