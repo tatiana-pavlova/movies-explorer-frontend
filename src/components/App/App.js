@@ -180,7 +180,6 @@ function App() {
     mainApi.deleteMovie(chosenMovie._id)
       .then(() => {
         setSavedMovies((state) => state.filter((c) => c._id !== movie._id))
-        // setSelectedSavedMovies((state) => state.filter((c) => c._id !== movie._id))
       })
       .catch((err) => {
         console.log(err);

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logoPath from '../../images/logo.svg';
+import { InputsForRegister } from '../../utils/constants';
+import FormInput from '../FormInput/FormInput';
 import { useFormWithValidation } from '../useFormWithValidation/useFormWithValidation';
 import './Register.css';
 
@@ -14,10 +16,10 @@ function Register({onRegister, registerError}) {
   }
 
   const handleChange = (e) => {
-    validation.handleChange(e);
+    validation.handleChange(e, InputsForRegister);
   }
 
-  
+    
   return (
     <section className='register'>
       <div className='register__content'>
@@ -25,27 +27,17 @@ function Register({onRegister, registerError}) {
         <h2 className='register__title'>Добро пожаловать!</h2>
         <form onSubmit={handleSubmit}>
           <div className='register__input-wrapper'>
-            <fieldset className='register__fieldset'>
-              <label htmlFor='username' className='register__label'>Имя</label>
-              <input type='text' name='username' className='register__input' placeholder='Имя' 
-                id='username' minLength={2} required onChange={handleChange}></input>
-              <span className='register__input-error'>{validation.errors.username}</span>
-            </fieldset>
-            <fieldset className='register__fieldset'>
-              <label htmlFor='useremail' className='register__label'>E-mail</label>
-              <input type='email' name='email' className='register__input' placeholder='email' 
-                id='useremail' required onChange={handleChange}></input>
-              <span className='register__input-error'>{validation.errors.email}</span>
-            </fieldset>
-            <fieldset className='register__fieldset'>
-              <label htmlFor='userpassword' className='register__label'>Пароль</label>
-              <input type='password' name='password' className='register__input' placeholder='Пароль' 
-                id='userpassword' minLength={8} required onChange={handleChange}></input>
-              <span className='register__input-error'>{validation.errors.password}</span>
-            </fieldset>
+            {InputsForRegister.map((input) => {
+              return (
+                <FormInput key={input.id} name={input.name} label={input.label} type={input.type} placeholder={input.placeholder} 
+                onChange={handleChange} error={validation.errors[input.name]} />
+              )
+            })}
           </div>
-          <span className={`register__input-error ${registerError ? '' : 'register__input-error_invisible'}`}>Что-то пошло не так...</span>
-          <button type='submit' className='register__button' disabled={!validation.isValid ? true : false}>Зарегистрироваться</button>
+          <span className={`register__api-error ${registerError ? '' : 'register__api-error_invisible'}`}>
+            Что-то пошло не так...</span>
+          <button type='submit' className='register__button' disabled={!validation.isValid ? true : false}>
+            Зарегистрироваться</button>
         </form>
         <p className='register__question'>Уже зарегистрированы? <Link to='/signin' className='register__link'>Войти</Link></p>
       </div>

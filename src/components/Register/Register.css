@@ -16,7 +16,7 @@
   line-height: 17px;
   color: #fff;
   padding: 0;
-  margin: 0 0 16px;
+  margin: 20px 0 16px;
 }
 
 .register__button:hover {
@@ -74,9 +74,24 @@
   line-height: 12px;
   color: #FF3055;
   margin: 0;
+  display: none;
 }
 
-.register__input-error_invisible {
+.register__input[focused = "true"] + .register__input-error {
+  display: block;
+}
+
+.register__api-error {
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  color: #FF3055;
+  margin: 0;
+}
+
+
+.register__api-error_invisible {
   visibility: hidden;
 }
 
