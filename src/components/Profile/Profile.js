@@ -20,7 +20,6 @@ function Profile(props) {
 
    
   const handleUserNameChange = (e) => {
-    console.log(e.target.value);
     validation.handleChange(e, [{name: 'username'}]);
     if (currentUser.name !== e.target.value) {
       setIsValid(true);
