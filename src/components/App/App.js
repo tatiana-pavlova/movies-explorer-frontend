@@ -32,6 +32,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({name: '', email: '', _id: ''})
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [infoTooltipTitle, setInfoTooltipTitle] = React.useState('');
+  const [isUserChecked, setIsUserChecked] = React.useState(false);
   
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -44,11 +45,12 @@ function App() {
       .then ((res) => {
         setCurrentUser(res);
         setLoggedIn(true);
+        setIsUserChecked(true);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [history, loggedIn])
+  }, [loggedIn, history])
  
 
   React.useEffect(() => {
@@ -99,7 +101,7 @@ function App() {
       })
   }, [loggedIn])
 
-
+  
   React.useEffect(() => {
     setTimeout(function() {
       setIsInfoTooltipOpen(false);
@@ -178,15 +180,15 @@ function App() {
     const chosenMovie = savedMovies.find(savedMovie => savedMovie.movieId === movie.movieId);
     
     mainApi.deleteMovie(chosenMovie._id)
-      .then(() => {
-        setSavedMovies((state) => state.filter((c) => c._id !== movie._id))
+      .then((deletedMovie) => {
+        setSavedMovies((state) => state.filter((c) => c._id !== deletedMovie._id));
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-
+  
   const onRegister = (values) => {
     return mainApi.register(values)
       .then ((res) => {
@@ -275,13 +277,14 @@ function App() {
                 <Main />
               </Route>
               <ProtectedRoute path='/movies' loggedIn={loggedIn} component={Movies} onSearchMovies={handleSearchMovies} 
-                  onLoadMore={handleLoadMore} onSaveMovie={handleSaveMovie} onDeleteMovie={handleDeleteMovie} 
-                  selectedMovies={selectedMovies} currentCards={currentCards} isLoading={isLoading} searchInfoBox={searchInfoBox}
-                  movies={movies} />
+                onLoadMore={handleLoadMore} onSaveMovie={handleSaveMovie} onDeleteMovie={handleDeleteMovie} 
+                selectedMovies={selectedMovies} currentCards={currentCards} isLoading={isLoading} searchInfoBox={searchInfoBox}
+                movies={movies} isUserChecked={isUserChecked} />
               <ProtectedRoute path='/saved-movies' loggedIn={loggedIn} component={SavedMovies} onDeleteMovie={handleDeleteMovie}
-                  filterMovies={filterMovies} searchInfoBox={searchInfoBox} />
+                filterMovies={filterMovies} searchInfoBox={searchInfoBox} isUserChecked={isUserChecked} />
               <ProtectedRoute path='/profile' loggedIn={loggedIn} component={Profile} onUpdateUser={handleUpdateUser} 
-                  infoTooltip={<InfoTooltip isOpen={isInfoTooltipOpen} title={infoTooltipTitle} />} onSignOut={onSignOut}  />
+                infoTooltip={<InfoTooltip isOpen={isInfoTooltipOpen} title={infoTooltipTitle} />} onSignOut={onSignOut}
+                isUserChecked={isUserChecked} />
               <Route path='/signup'>
                 <Register onRegister={onRegister} registerError={registerError} />
               </Route>

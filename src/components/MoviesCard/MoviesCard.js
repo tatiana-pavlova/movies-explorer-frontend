@@ -5,15 +5,20 @@ import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 
 function MoviesCard(props) {
   const savedMovies = React.useContext(SavedMoviesContext);
-  const isSaved = savedMovies.some(movie => movie.movieId === props.card.movieId);
+  
+  const [isSaved, setIsSaved] = React.useState(savedMovies.some(movie => movie.movieId === props.card.movieId))
 
+  
   const handleCheckBoxClick = () => {
     if (isSaved) {
       props.onDeleteMovie(props.card);
+      setIsSaved(false);
     } else {
       props.onSaveMovie(props.card);
+      setIsSaved(true);
     }
   }
+  
 
   const handleDeleteCard = () => {
     props.onDeleteMovie(props.card);

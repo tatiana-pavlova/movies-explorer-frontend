@@ -7,10 +7,10 @@ import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 function SavedMovies(props) {
   const savedMovies = React.useContext(SavedMoviesContext);
   const [moviesForRender, setMoviesForRender] = React.useState([]);
-
+  
   React.useEffect (() => {
     setMoviesForRender(savedMovies);
-  },[]);
+  },[savedMovies]);
 
 
   const handleSearchMovies = (keyWords, isShortFilm) => {
