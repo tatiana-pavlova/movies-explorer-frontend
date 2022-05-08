@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import './MoviesCard.css';
 import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
+import { MinutesPerHour } from '../../utils/constants';
 
 function MoviesCard(props) {
   const savedMovies = React.useContext(SavedMoviesContext);
@@ -30,7 +31,7 @@ function MoviesCard(props) {
       <div className="card__head">
         <div className="card__info">
           <h2 className="card__title">{props.card.nameRU}</h2>
-          <p className="card__duration">{`${Math.floor(props.card.duration / 60)}ч ${props.card.duration % 60}м`}</p>
+          <p className="card__duration">{`${Math.floor(props.card.duration / MinutesPerHour)}ч ${props.card.duration % MinutesPerHour}м`}</p>
         </div>
         {props.isSavedMoviesPage ? 
           <button className="card__close-button" onClick={handleDeleteCard}></button> :

@@ -16,6 +16,15 @@ import mainApi from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { SavedMoviesContext } from '../../contexts/SavedMoviesContext';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { MaxShortFilmDuration, 
+         NumberOfInitialCardsForLargeScreen, 
+         NumberOfInitialCardsForMediumScreen, 
+         NumberOfInitialCardsForSmallScreen,
+         NumberOfAdditionalCardsForLargeScreen,
+         NumberOfAdditionalCardsForSmallScreen,
+         LargeScreenMinWidth,
+         MediumScreenMinWidth } from '../../utils/constants';
+
 
 function App() {
   const [isPopupNavigationOpen, setIsPopupNavigationOpen] = React.useState(false);
@@ -23,7 +32,6 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [selectedMovies, setSelectedMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
-  const [currentPage] = React.useState(1);
   const [cardsPerPage, setCardsPerPage] = React.useState(0);
   const [searchInfoBox, setSearchInfoBox] = React.useState('');
   const [registerError, setRegisterError] = React.useState(false);
@@ -35,7 +43,7 @@ function App() {
   const [isUserChecked, setIsUserChecked] = React.useState(false);
   const [isUserDataSending, setIsUserDataSending] = React.useState(false);
   
-  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfLastCard = cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = selectedMovies.slice(indexOfFirstCard, indexOfLastCard);
   const history = useHistory();
@@ -113,7 +121,7 @@ function App() {
   const filterMovies = (movies, keyWords, isShortFilm) => {
     let filteredMovies = movies.filter(movie => movie.nameRU.toLowerCase().includes(keyWords.toLowerCase()));
     if (isShortFilm) {
-      filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
+      filteredMovies = filteredMovies.filter(movie => movie.duration <= MaxShortFilmDuration);
     }
 
     if (filteredMovies.length === 0) {
@@ -144,21 +152,21 @@ function App() {
   
 
   const setCardsPerPageForRender = () => {
-    if (document.documentElement.clientWidth >= 850) {
-      setCardsPerPage(12);
-    } else if (document.documentElement.clientWidth >= 500) {
-      setCardsPerPage(8);
+    if (document.documentElement.clientWidth >= LargeScreenMinWidth) {
+      setCardsPerPage(NumberOfInitialCardsForLargeScreen);
+    } else if (document.documentElement.clientWidth >= MediumScreenMinWidth) {
+      setCardsPerPage(NumberOfInitialCardsForMediumScreen);
     } else {
-      setCardsPerPage(5);
+      setCardsPerPage(NumberOfInitialCardsForSmallScreen);
     }
   }
 
   
   const handleLoadMore = () => {
-    if (document.documentElement.clientWidth > 850) {
-      setCardsPerPage(cardsPerPage + 3);
+    if (document.documentElement.clientWidth > LargeScreenMinWidth) {
+      setCardsPerPage(cardsPerPage + NumberOfAdditionalCardsForLargeScreen);
     } else {
-      setCardsPerPage(cardsPerPage + 2);
+      setCardsPerPage(cardsPerPage + NumberOfAdditionalCardsForSmallScreen);
     }
   }
 
@@ -209,7 +217,7 @@ function App() {
 
   const onLogin = (values) => {
     setIsUserDataSending(true);
-    
+
     mainApi.authorize(values)
     .then ((data) => {
       if (data.token) {

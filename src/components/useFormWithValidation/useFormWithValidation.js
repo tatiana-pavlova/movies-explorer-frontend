@@ -1,5 +1,9 @@
 import React, { useCallback } from 'react';
-import { regexForEmail } from '../../utils/constants';
+import { RegexForEmail,
+         MinNameLength,
+         MaxNameLength,
+         MinPasswordLength } from '../../utils/constants';
+
 
 export function useFormWithValidation() {
   const [values, setValues] = React.useState({});
@@ -27,7 +31,7 @@ export function useFormWithValidation() {
     if(inputs.some(input => input.name === 'username')) {
       if(!values.username) {
         errors.username = 'Необходимо заполить имя';
-      } else if (values.username.length < 2 || values.username.length > 30) {
+      } else if (values.username.length < MinNameLength || values.username.length > MaxNameLength) {
         errors.username = 'Имя должно содержать от 2 до 30 символов';
       }
     }
@@ -35,7 +39,7 @@ export function useFormWithValidation() {
     if(inputs.some(input => input.name === 'email')) {
       if(!values.email) {
         errors.email = 'Необходимо указать email';
-      } else if(!regexForEmail.test(values.email)) {
+      } else if(!RegexForEmail.test(values.email)) {
         errors.email = 'Некорректный формат email';
       }
     }
@@ -43,7 +47,7 @@ export function useFormWithValidation() {
     if(inputs.some(input => input.name === 'password')) {
       if(!values.password) {
         errors.password = 'Необходимо ввести пароль';
-      } else if (values.password.length < 8) {
+      } else if (values.password.length < MinPasswordLength) {
         errors.password = 'Пароль должен содержать минимум 8 символов';
       }
     }
