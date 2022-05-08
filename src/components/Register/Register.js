@@ -7,13 +7,9 @@ import { useFormWithValidation } from '../useFormWithValidation/useFormWithValid
 import './Register.css';
 
 
-function Register({onRegister, registerError}) {
+function Register({onRegister, registerError, isDataSending}) {
   const validation = useFormWithValidation();
   const [isFillingIn, setIsFillingIn] = React.useState(false);
-
-  React.useEffect(() => {
-    console.log(validation.isValid);
-  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +33,7 @@ function Register({onRegister, registerError}) {
             {InputsForRegister.map((input) => {
               return (
                 <FormInput key={input.id} name={input.name} label={input.label} type={input.type} placeholder={input.placeholder} 
-                onChange={handleChange} error={validation.errors[input.name]} />
+                onChange={handleChange} error={validation.errors[input.name]} isDataSending={isDataSending} />
               )
             })}
           </div>

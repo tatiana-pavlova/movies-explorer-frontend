@@ -33,6 +33,7 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [infoTooltipTitle, setInfoTooltipTitle] = React.useState('');
   const [isUserChecked, setIsUserChecked] = React.useState(false);
+  const [isUserDataSending, setIsUserDataSending] = React.useState(false);
   
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -190,7 +191,9 @@ function App() {
 
   
   const onRegister = (values) => {
-    return mainApi.register(values)
+    setIsUserDataSending(true);
+
+    mainApi.register(values)
       .then ((res) => {
         if(res) {
           onLogin(values);
@@ -199,11 +202,15 @@ function App() {
       .catch (() => {
         setRegisterError(true);
       })
+    
+    setIsUserDataSending(false);
   }
 
 
   const onLogin = (values) => {
-    return mainApi.authorize(values)
+    setIsUserDataSending(true);
+    
+    mainApi.authorize(values)
     .then ((data) => {
       if (data.token) {
         setLoggedIn(true);
@@ -213,6 +220,8 @@ function App() {
     .catch(() => {
       setLoginError(true);
     });
+
+    setIsUserDataSending(false);
   }
 
 
@@ -286,10 +295,10 @@ function App() {
                 infoTooltip={<InfoTooltip isOpen={isInfoTooltipOpen} title={infoTooltipTitle} />} onSignOut={onSignOut}
                 isUserChecked={isUserChecked} />
               <Route path='/signup'>
-                <Register onRegister={onRegister} registerError={registerError} />
+                <Register onRegister={onRegister} registerError={registerError} isDataSending={isUserDataSending} />
               </Route>
               <Route path='/signin'>
-                <Login onLogin={onLogin} loginError={loginError} />
+                <Login onLogin={onLogin} loginError={loginError} isDataSending={isUserDataSending} />
               </Route>
               <Route path='*'>
                 <PageNotFound />

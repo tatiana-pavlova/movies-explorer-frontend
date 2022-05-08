@@ -5,7 +5,7 @@ import { useFormWithValidation } from '../useFormWithValidation/useFormWithValid
 import FormInput from '../FormInput/FormInput';
 import { InputsForLogin } from '../../utils/constants';
 
-function Login({onLogin, loginError}) {
+function Login({onLogin, loginError, isDataSending}) {
   const validation = useFormWithValidation();
   const [isFillingIn, setIsFillingIn] = React.useState(false);
 
@@ -33,7 +33,7 @@ function Login({onLogin, loginError}) {
             {InputsForLogin.map((input) => {
               return (
                 <FormInput key={input.id} name={input.name} label={input.label} type={input.type} placeholder={input.placeholder} 
-                onChange={handleChange} error={validation.errors[input.name]} />
+                onChange={handleChange} error={validation.errors[input.name]} isDataSending={isDataSending} />
               )
             })}
           </div>
