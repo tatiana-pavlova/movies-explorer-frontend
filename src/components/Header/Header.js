@@ -1,23 +1,14 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import logoPath from '../../images/logo.svg';
 import Navigation from '../Navigation/Navigation';
 
 import './Header.css';
 
 function Header(props) {
-  return (
-    <>
-      <Route exact path='/'>
-        <header className='header header_theme_dark'>
-          <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='header__logo'/></Link>
-          <div>
-            <Link to='/signup' className='header__link'>Регистрация</Link>
-            <Link to='/signin' className='header__link'><button className='header__button'>Войти</button></Link>
-          </div>
-        </header>
-      </Route>
-      <Route path={['/movies', '/saved-movies', '/profile']}>
+  if (props.isLoggedIn) {
+    return (
+      <Route path={['/movies', '/saved-movies', '/profile', '/']}>
         <header className='header header_theme_light'>
           <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='header__logo'/></Link>
           <Navigation />
@@ -26,8 +17,20 @@ function Header(props) {
           </div>
         </header>
       </Route>
-    </>
-  );
+    )
+  } else {
+    return (
+      <Route path={['/signin', '/signup', '/']}>
+        <header className='header header_theme_dark'>
+          <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='header__logo'/></Link>
+          <div>
+            <Link to='/signup' className='header__link'>Регистрация</Link>
+            <Link to='/signin' className='header__link'><button className='header__button'>Войти</button></Link>
+          </div>
+        </header>
+      </Route>
+    )
+  }
 }
 
 export default Header;

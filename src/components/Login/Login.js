@@ -1,26 +1,44 @@
 import React from 'react';
 import logoPath from '../../images/logo.svg';
 import { Link } from 'react-router-dom';
+import { useFormWithValidation } from '../useFormWithValidation/useFormWithValidation';
+import FormInput from '../FormInput/FormInput';
+import { InputsForLogin } from '../../utils/constants';
 
-function Login() {
+function Login({onLogin, loginError, isDataSending}) {
+  const validation = useFormWithValidation();
+  const [isFillingIn, setIsFillingIn] = React.useState(false);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onLogin(validation.values)
+    setIsFillingIn(false);
+  }
+  
+
+  const handleChange = (e) => {
+    setIsFillingIn(true);
+    validation.handleChange(e, InputsForLogin);
+  }
+
+
   return (
     <section className='register'>
       <div className='register__content'>
         <Link to='/'><img src={logoPath} alt='Логотип BeatFilm' className='register__logo'/></Link>
         <h2 className='register__title'>Рады видеть!</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className='register__input-wrapper'>
-            <fieldset className='register__fieldset'>
-              <label htmlFor='useremail' className='register__label'>E-mail</label>
-              <input type='email' className='register__input' defaultValue='pochta@yandex.ru' placeholder='email' id='useremail'></input>
-            </fieldset>
-            <fieldset className='register__fieldset'>
-              <label htmlFor='userpassword' className='register__label'>Пароль</label>
-              <input type='password' className='register__input' defaultValue='qwerty' placeholder='Пароль' id='userpassword'></input>
-            </fieldset>
-            <span className='register__input-error register__input-error_invisible'>Что-то пошло не так...</span>
+            {InputsForLogin.map((input) => {
+              return (
+                <FormInput key={input.id} name={input.name} label={input.label} type={input.type} placeholder={input.placeholder} 
+                onChange={handleChange} error={validation.errors[input.name]} isDataSending={isDataSending} />
+              )
+            })}
           </div>
-          <button type='submit' className='register__button'>Войти</button>
+          <span className={`register__api-error ${loginError ? '' : 'register__api-error_invisible'}`}>Что-то пошло не так...</span>
+          <button type='submit' className='register__button' disabled={validation.isValid && isFillingIn ? false : true}>Войти</button>
         </form>
         <p className='register__question'>Ещё не зарегистрированы? <Link to='/signup' className='register__link'>Регистрация</Link></p>
       </div>
