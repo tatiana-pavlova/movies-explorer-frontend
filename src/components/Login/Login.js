@@ -7,15 +7,18 @@ import { InputsForLogin } from '../../utils/constants';
 
 function Login({onLogin, loginError}) {
   const validation = useFormWithValidation();
+  const [isFillingIn, setIsFillingIn] = React.useState(false);
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onLogin(validation.values)
+    setIsFillingIn(false);
   }
   
 
   const handleChange = (e) => {
+    setIsFillingIn(true);
     validation.handleChange(e, InputsForLogin);
   }
 
@@ -35,7 +38,7 @@ function Login({onLogin, loginError}) {
             })}
           </div>
           <span className={`register__api-error ${loginError ? '' : 'register__api-error_invisible'}`}>Что-то пошло не так...</span>
-          <button type='submit' className='register__button' disabled={!validation.isValid ? true : false}>Войти</button>
+          <button type='submit' className='register__button' disabled={validation.isValid && isFillingIn ? false : true}>Войти</button>
         </form>
         <p className='register__question'>Ещё не зарегистрированы? <Link to='/signup' className='register__link'>Регистрация</Link></p>
       </div>

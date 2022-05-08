@@ -9,13 +9,20 @@ import './Register.css';
 
 function Register({onRegister, registerError}) {
   const validation = useFormWithValidation();
+  const [isFillingIn, setIsFillingIn] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log(validation.isValid);
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onRegister(validation.values)
+    setIsFillingIn(false);
   }
 
   const handleChange = (e) => {
+    setIsFillingIn(true);
     validation.handleChange(e, InputsForRegister);
   }
 
@@ -36,7 +43,7 @@ function Register({onRegister, registerError}) {
           </div>
           <span className={`register__api-error ${registerError ? '' : 'register__api-error_invisible'}`}>
             Что-то пошло не так...</span>
-          <button type='submit' className='register__button' disabled={!validation.isValid ? true : false}>
+          <button type='submit' className='register__button' disabled={validation.isValid && isFillingIn ? false : true} >
             Зарегистрироваться</button>
         </form>
         <p className='register__question'>Уже зарегистрированы? <Link to='/signin' className='register__link'>Войти</Link></p>

@@ -9,6 +9,7 @@ export function useFormWithValidation() {
   
 
   React.useEffect(() => {
+    console.log("useEffect отработал");
     if (Object.keys(errors).length === 0) {
       setIsValid(true);
     } else {
