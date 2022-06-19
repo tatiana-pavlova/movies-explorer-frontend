@@ -57,6 +57,7 @@ function App() {
         setIsUserChecked(true);
       })
       .catch((err) => {
+        setIsUserChecked(true);
         console.log(err);
       });
   }, [loggedIn, history])

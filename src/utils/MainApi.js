@@ -103,7 +103,7 @@ class MainApi {
   }
 }
 
-const mainApi = new MainApi({url: 'https://api.movies-explorer.tp.nomoredomains.rocks', 
+const mainApi = new MainApi({url: 'http://localhost:3000', 
   headers: {'Content-Type': 'application/json'}
 });
 
